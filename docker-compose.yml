@@ -3,12 +3,6 @@ services:
   app:
     build: .
     volumes:
-      - ./package.json:/usr/src/app/package.json
-      - ./yarn.lock:/usr/src/app/yarn.lock
-      - ./src:/usr/src/app/src
-      - ./index.html:/usr/src/app/index.html
-      - ./node_modules:/usr/src/app/node_modules
-      - ./tsconfig.json:/usr/src/app/tsconfig.json
-      - ./vite.config.ts:/usr/src/app/vite.config.ts
+      - ./:/usr/src/app
     ports:
       - 3000:3000
