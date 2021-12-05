@@ -6,6 +6,4 @@ COPY yarn.lock package.json src index.html package.json tsconfig.json vite.confi
 
 RUN yarn install
 
-EXPOSE 3000
-
 ENTRYPOINT ["yarn", "dev"]
