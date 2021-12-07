@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import ListItem from "./ListItem";
 import axios, { AxiosResponse } from "axios";
+import { Spinner, Stack } from "@chakra-ui/react";
+import ListItem from "./ListItem";
 
 type Task = {
   id: number;
@@ -25,15 +26,15 @@ const List = () => {
     fetchTasks();
   }, []);
   return (
-    <ul>
+    <Stack width="100%">
       {list.length ? (
         list.map((task: Task) => (
           <ListItem key={task.id} title={task.title} isDone={task.done} />
         ))
       ) : (
-        <p>Loading...</p>
+        <Spinner />
       )}
-    </ul>
+    </Stack>
   );
 };
 

@@ -1,3 +1,6 @@
+import { Box, Checkbox, HStack, IconButton, Text } from "@chakra-ui/react";
+import { CloseIcon, EditIcon } from "@chakra-ui/icons";
+
 type Props = {
   title: string;
   isDone: boolean;
@@ -5,10 +8,22 @@ type Props = {
 
 const ListItem: React.FC<Props> = ({ title, isDone }) => {
   return (
-    <div>
-      <p>title: {title}</p>
-      <p>done or not: {isDone ? "yes!" : "no"}</p>
-    </div>
+    <HStack
+      gridGap={4}
+      borderBottom="1px"
+      borderColor="gray.200"
+      paddingBottom={1}
+      width="100%"
+    >
+      <Checkbox defaultIsChecked={isDone ? true : false} size="lg" />
+      <Text textAlign="left" flexGrow={1} fontSize="lg">
+        {title}
+      </Text>
+      <HStack>
+        <IconButton aria-label="Search database" icon={<EditIcon />} />
+        <IconButton aria-label="Search database" icon={<CloseIcon />} />
+      </HStack>
+    </HStack>
   );
 };
 
