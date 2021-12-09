@@ -1,34 +1,16 @@
-import { useEffect, useState } from "react";
-import axios, { AxiosResponse } from "axios";
 import { Spinner, Stack } from "@chakra-ui/react";
 import ListItem from "./ListItem";
+import { Task } from "../schema";
 
-type Task = {
-  id: number;
-  title: string;
-  done: boolean;
+type Props = {
+  tasks: Array<Task>;
 };
 
-const List = () => {
-  const [list, setList] = useState<Array<Task>>([]);
-  const fetchTasks = async () => {
-    const res: AxiosResponse | null = await axios
-      .get("http://localhost:8000/tasks")
-      .catch(() => {
-        alert("some error");
-        return null;
-      });
-    if (res) {
-      setList(res.data);
-    }
-  };
-  useEffect(() => {
-    fetchTasks();
-  }, []);
+const List: React.FC<Props> = ({ tasks }) => {
   return (
     <Stack width="100%">
-      {list.length ? (
-        list.map((task: Task) => (
+      {tasks.length ? (
+        tasks.map((task: Task) => (
           <ListItem key={task.id} title={task.title} isDone={task.done} />
         ))
       ) : (

@@ -1,4 +1,13 @@
-import { Box, Checkbox, HStack, IconButton, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Checkbox,
+  Editable,
+  EditablePreview,
+  EditableInput,
+  HStack,
+  IconButton,
+  Text,
+} from "@chakra-ui/react";
 import { CloseIcon, EditIcon } from "@chakra-ui/icons";
 
 type Props = {
@@ -16,9 +25,15 @@ const ListItem: React.FC<Props> = ({ title, isDone }) => {
       width="100%"
     >
       <Checkbox defaultIsChecked={isDone ? true : false} size="lg" />
-      <Text textAlign="left" flexGrow={1} fontSize="lg">
-        {title}
-      </Text>
+      <Editable
+        defaultValue={title}
+        textAlign="left"
+        flexGrow={1}
+        fontSize="lg"
+      >
+        <EditablePreview />
+        <EditableInput />
+      </Editable>
       <HStack>
         <IconButton aria-label="Search database" icon={<EditIcon />} />
         <IconButton aria-label="Search database" icon={<CloseIcon />} />
