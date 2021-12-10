@@ -1,21 +1,40 @@
+import axios, { AxiosResponse } from "axios";
+import { useForm, SubmitHandler } from "react-hook-form";
 import {
-  Box,
   Checkbox,
   Editable,
   EditablePreview,
   EditableInput,
   HStack,
   IconButton,
-  Text,
 } from "@chakra-ui/react";
 import { CloseIcon, EditIcon } from "@chakra-ui/icons";
+import { Task } from "../schema";
 
 type Props = {
-  title: string;
-  isDone: boolean;
+  task: Task;
+  tasks: Array<Task>;
+  setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 };
 
-const ListItem: React.FC<Props> = ({ title, isDone }) => {
+type Inputs = {
+  title: string;
+};
+
+const ListItem: React.FC<Props> = ({ task, tasks, setTasks }) => {
+  const { register, handleSubmit } = useForm<Inputs>();
+
+  const deleteTask = async (id: number) => {
+    try {
+      await axios.delete(`http://localhost:8000/tasks/${id}`);
+    } catch (err) {
+      alert("some error");
+      return;
+    }
+    const newTasks = tasks.filter((t) => t.id !== id);
+    setTasks(newTasks);
+  };
+
   return (
     <HStack
       gridGap={4}
@@ -24,9 +43,9 @@ const ListItem: React.FC<Props> = ({ title, isDone }) => {
       paddingBottom={1}
       width="100%"
     >
-      <Checkbox defaultIsChecked={isDone ? true : false} size="lg" />
+      <Checkbox defaultIsChecked={task.done ? true : false} size="lg" />
       <Editable
-        defaultValue={title}
+        defaultValue={task.title}
         textAlign="left"
         flexGrow={1}
         fontSize="lg"
@@ -35,8 +54,12 @@ const ListItem: React.FC<Props> = ({ title, isDone }) => {
         <EditableInput />
       </Editable>
       <HStack>
-        <IconButton aria-label="Search database" icon={<EditIcon />} />
-        <IconButton aria-label="Search database" icon={<CloseIcon />} />
+        <IconButton aria-label="Edit task title" icon={<EditIcon />} />
+        <IconButton
+          aria-label="Delete task"
+          icon={<CloseIcon />}
+          onClick={async () => await deleteTask(task.id)}
+        />
       </HStack>
     </HStack>
   );

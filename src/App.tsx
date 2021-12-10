@@ -31,7 +31,7 @@ function App() {
             My Todo List
           </Heading>
           <InputForm tasks={tasks} setTasks={setTasks} />
-          <List tasks={tasks} />
+          <List tasks={tasks} setTasks={setTasks} />
         </VStack>
       </Container>
     </div>

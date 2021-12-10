@@ -16,7 +16,7 @@ type Inputs = {
 const InputForm: React.FC<Props> = ({ tasks, setTasks }) => {
   const { register, handleSubmit } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const addTask: SubmitHandler<Inputs> = async (data) => {
     const res: AxiosResponse | null = await axios
       .post("http://localhost:8000/tasks", data)
       .catch(() => {
@@ -31,7 +31,7 @@ const InputForm: React.FC<Props> = ({ tasks, setTasks }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(addTask)}>
       <HStack w="100%">
         <Input
           placeholder="Enter your task title"
