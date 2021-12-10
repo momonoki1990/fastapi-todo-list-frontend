@@ -7,6 +7,7 @@ import {
   EditableInput,
   HStack,
   IconButton,
+  useEditableControls,
 } from "@chakra-ui/react";
 import { CloseIcon, EditIcon } from "@chakra-ui/icons";
 import { Task } from "../schema";
@@ -23,6 +24,30 @@ type Inputs = {
 
 const ListItem: React.FC<Props> = ({ task, tasks, setTasks }) => {
   const { register, handleSubmit } = useForm<Inputs>();
+
+  // const { isEditing } = useEditableControls();
+
+  const updateTask = async (task: Task) => {
+    const data = {
+      title: task.title,
+      done: task.done,
+    };
+    let updatedTask: Task;
+    try {
+      const res = await axios.put(
+        `http://localhost:8000/tasks/${task.id}`,
+        data
+      );
+      updatedTask = res.data;
+    } catch (err) {
+      console.error(err);
+      alert("some error");
+      return;
+    }
+    const idx = tasks.findIndex((t) => t.id === task.id);
+    tasks.splice(idx, 1, updatedTask);
+    setTasks(tasks);
+  };
 
   const deleteTask = async (id: number) => {
     try {
@@ -49,12 +74,12 @@ const ListItem: React.FC<Props> = ({ task, tasks, setTasks }) => {
         textAlign="left"
         flexGrow={1}
         fontSize="lg"
+        onSubmit={(v: string) => updateTask({ ...task, ...{ title: v } })}
       >
         <EditablePreview />
         <EditableInput />
       </Editable>
       <HStack>
-        <IconButton aria-label="Edit task title" icon={<EditIcon />} />
         <IconButton
           aria-label="Delete task"
           icon={<CloseIcon />}
