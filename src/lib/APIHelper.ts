@@ -1,11 +1,7 @@
 import axios, { AxiosResponse } from "axios";
+import { UpdateTaskData } from "../schema";
 
 const API_ORIGIN = "http://localhost:8000";
-
-type UpdateTaskData = {
-  title: string;
-  done: boolean;
-};
 
 const getAllTasks = async (): Promise<AxiosResponse> =>
   await axios.get(`${API_ORIGIN}/tasks`);

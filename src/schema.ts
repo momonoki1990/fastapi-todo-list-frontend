@@ -3,3 +3,8 @@ export type Task = {
   title: string;
   done: boolean;
 };
+
+export type UpdateTaskData = {
+  title: string;
+  done?: boolean;
+};
