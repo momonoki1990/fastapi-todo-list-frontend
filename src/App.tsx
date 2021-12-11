@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { Container, Heading, VStack } from "@chakra-ui/react";
 import "./App.css";
 import List from "./components/List";
 import InputForm from "./components/InputForm";
 import { Task } from "./schema";
+import APIHelper from "./lib/APIHelper";
 
 function App() {
   const [tasks, setTasks] = useState<Array<Task>>([]);
   const fetchTasks = async () => {
-    const res: AxiosResponse | null = await axios
-      .get("http://localhost:8000/tasks")
-      .catch(() => {
-        alert("some error");
-        return null;
-      });
-    if (!res) {
+    let res: AxiosResponse;
+    try {
+      res = await APIHelper.getAllTasks();
+    } catch (err) {
+      console.error(err);
+      alert("some error");
       return;
     }
     setTasks(res.data);
