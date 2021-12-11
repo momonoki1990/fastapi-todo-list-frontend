@@ -1,3 +1,4 @@
+import { ChangeEvent } from "react";
 import axios, { AxiosResponse } from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {
@@ -7,7 +8,6 @@ import {
   EditableInput,
   HStack,
   IconButton,
-  useEditableControls,
 } from "@chakra-ui/react";
 import { CloseIcon, EditIcon } from "@chakra-ui/icons";
 import { Task } from "../schema";
@@ -50,6 +50,11 @@ const ListItem: React.FC<Props> = ({ task, tasks, setTasks }) => {
     setTasks(newTasks);
   };
 
+  const toggleDone = async (checked: boolean) => {
+    const newTask: Task = { ...task, ...{ done: checked } };
+    await updateTask(newTask);
+  };
+
   return (
     <HStack
       gridGap={4}
@@ -58,7 +63,13 @@ const ListItem: React.FC<Props> = ({ task, tasks, setTasks }) => {
       paddingBottom={1}
       width="100%"
     >
-      <Checkbox defaultIsChecked={task.done ? true : false} size="lg" />
+      <Checkbox
+        defaultIsChecked={task.done ? true : false}
+        size="lg"
+        onChange={(event: ChangeEvent<HTMLInputElement>) =>
+          toggleDone(event.currentTarget.checked)
+        }
+      />
       <Editable
         defaultValue={task.title}
         textAlign="left"
