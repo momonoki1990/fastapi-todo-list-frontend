@@ -9,7 +9,9 @@ import APIHelper from "./lib/APIHelper";
 
 function App() {
   const [tasks, setTasks] = useState<Array<Task>>([]);
+  const [loading, setLoading] = useState<boolean>(false);
   const fetchTasks = async () => {
+    setLoading(true);
     let res: AxiosResponse;
     try {
       res = await APIHelper.getAllTasks();
@@ -19,6 +21,7 @@ function App() {
       return;
     }
     setTasks(res.data);
+    setLoading(false);
   };
   useEffect(() => {
     fetchTasks();
@@ -31,7 +34,7 @@ function App() {
             My Todo List
           </Heading>
           <InputForm tasks={tasks} setTasks={setTasks} />
-          <List tasks={tasks} setTasks={setTasks} />
+          <List tasks={tasks} setTasks={setTasks} loading={loading} />
         </VStack>
       </Container>
     </div>
